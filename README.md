@@ -1,2 +1,2 @@
 # A-ludum-pseudo
-First game
+My first game
