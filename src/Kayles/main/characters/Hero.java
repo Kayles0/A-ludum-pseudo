@@ -8,6 +8,7 @@ public class Hero extends Default_Characters {
 
     public Hero(int hp, double armor, double attack) {
         super(hp, armor, attack);
+        int max_hp = hp;
     }
 
     @Override
@@ -25,7 +26,8 @@ public class Hero extends Default_Characters {
         return super.getHp();
     }
 
-    public void changeHp(int hp){
-        this.hp += hp;
+    @Override
+    public void changeHp(int hp) {
+        super.changeHp(hp);
     }
 }

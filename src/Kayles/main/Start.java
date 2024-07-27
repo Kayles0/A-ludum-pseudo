@@ -1,7 +1,9 @@
 package Kayles.main;
 
+import Kayles.main.characters.BestiaryofMonsters;
 import Kayles.main.characters.Hero;
 
+import javax.management.monitor.MonitorMBean;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,12 +28,16 @@ public class Start {
     public static void find(Hero hero){
 
         Random random = new Random();
-        int a = random.nextInt(3);
+        int a = random.nextInt(6);
         switch (a){
-            case 0 -> System.out.println("+Hp");
-            case 1 -> {
-                System.out.println("Monster");
-                hero.changeHp(-1);
+            case 0,1 -> {
+                int hp_random = random.nextInt(4) + 1;
+                System.out.println("+Hp" + hp_random);
+                hero.changeHp(hp_random);
+            }
+            case 2,3 -> {
+                System.out.println("Monster <lvl 1> Hp: 5 armor: 0 attack: 1");
+                Start.fight(hero, new BestiaryofMonsters.Monster_Standart(1));
             }
             default -> System.out.println("Nothing");
         }
@@ -40,7 +46,7 @@ public class Start {
     }
 
     public static void game_menu(Hero hero){
-        System.out.printf("Hero hp: %d Attack: %.1f. Armor: %.1f.", hero.getHp(), hero.getAttack(), hero.getArmor());
+        System.out.printf("Hero hp: %d/%d Attack: %.1f. Armor: %.1f.", hero.getHp(),hero.getMax_hp(), hero.getAttack(), hero.getArmor());
         System.out.println("\nWhat will we do?\n\t1.Find something\n\t2.Check inventory (in dev >_<)\n\t3.Change location (in dev >_<)");
         byte m = in.nextByte();
         switch (m){
@@ -50,6 +56,22 @@ public class Start {
                 Start.game_menu(hero);
             }
         }
+    }
+
+    public static void fight(Hero hero, BestiaryofMonsters.Monster_Standart Monster_Standart){
+        System.out.printf("\n\tYour hp: %d/%d attack: %.1f. armor: %.1f.", hero.getHp(),hero.getMax_hp(), hero.getAttack(), hero.getArmor());
+        System.out.printf("\n\tMonster's hp: %d/%d attack: %.1f. armor: %.1f.", Monster_Standart.getHp(),Monster_Standart.getMax_hp(), Monster_Standart.getAttack(), Monster_Standart.getArmor());
+        hero.changeHp(-(int)Math.round(Monster_Standart.getAttack()));
+        Monster_Standart.changeHp(-(int)Math.round(hero.getAttack()));
+        if (hero.getHp() <= 0) {
+            System.out.println("\n\tYou lose fight\n\tGame Over");
+            Start.start();
+        }
+        else if (Monster_Standart.getHp() <= 0) {
+            System.out.println("\n\tYou won fight!!!");
+            Start.game_menu(hero);
+        }
+        else Start.fight(hero, Monster_Standart);
     }
 
 }
