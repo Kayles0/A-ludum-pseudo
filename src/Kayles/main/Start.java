@@ -20,7 +20,7 @@ public class Start {
         }
         Hero hero = new Hero(hp, armor, attack);
         System.out.println("You start your story...");
-        Start.find(hero);
+        Start.game_menu(hero);
     }
 
     public static void find(Hero hero){
@@ -35,7 +35,21 @@ public class Start {
             }
             default -> System.out.println("Nothing");
         }
-        if (hero.getHp() > 0) Start.find(hero);
+        if (hero.getHp() > 0) Start.game_menu(hero);
         else System.out.println("\tYou lose\n\tGame Over");
     }
+
+    public static void game_menu(Hero hero){
+        System.out.printf("Hero hp: %d Attack: %.1f. Armor: %.1f.", hero.getHp(), hero.getAttack(), hero.getArmor());
+        System.out.println("\nWhat will we do?\n\t1.Find something\n\t2.Check inventory (in dev >_<)\n\t3.Change location (in dev >_<)");
+        byte m = in.nextByte();
+        switch (m){
+            case 1 -> Start.find(hero);
+            case 2, 3 -> {
+                System.out.println("In developing >_<");
+                Start.game_menu(hero);
+            }
+        }
+    }
+
 }
